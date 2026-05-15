@@ -35,38 +35,6 @@ This project follows:
 
 API Routes → Controllers → Database Models
 
----
-
-# 📂 Project Structure
-
-TaskManagementApp/
-│
-├── main.py
-├── requirement.txt
-├── alembic.ini
-├── .env
-├── migration/
-│
-└── src/
-    ├── tasks/
-    │   ├── models.py
-    │   ├── dtos.py
-    │   ├── controller.py
-    │   └── router.py
-    │
-    ├── user/
-    │   ├── models.py
-    │   ├── dtos.py
-    │   ├── controller.py
-    │   └── router.py
-    │
-    └── utils/
-        ├── db.py
-        ├── settings.py
-        ├── helper.py
-        └── constant.py
----
-
 # 🛠️ Tech Stack
 
 | Technology     | Usage                     |
