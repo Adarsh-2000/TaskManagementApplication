@@ -1,0 +1,556 @@
+FASTAPI SETUP NOTES (STEP-BY-STEP)
+
+1.  Go to project folder cd “/Users/91sqft/Documents/WorkSpace/FastApi”
+
+2.  Create virtual environment python3 -m venv fastenv
+
+3.  Activate virtual environment - source fastenv/bin/activate
+
+4.  Install dependencies pip install fastapi uvicorn
+
+5.  Create main.py file with code:
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get(“/”) def read_root(): return {“message”: “Hello World 🚀”}
+
+🧠 What’s happening overall
+	•	FastAPI() → creates your backend app
+	•	@app.get("/") → defines an API endpoint
+	•	read_root() → function that runs when endpoint is hit
+	•	return {} → response sent to client (JSON)
+
+
+6.  Run the server -  uvicorn main:app –reload
+
+7.  Open in browser http://127.0.0.1:8000 http://127.0.0.1:8000/docs
+
+8.  Deactivate environment (when done) deactivate
+
+9.  Save dependencies pip freeze > requirements.txt
+
+10. Reinstall later pip install -r requirements.txt
+
+NOTES: - Always activate virtual environment before working - Avoid
+spaces in folder names - Use /docs for testing APIs
+
+
+When Project Open again
+This error 👇
+
+zsh: command not found: uvicorn
+
+means uvicorn is not installed in your current environment OR your venv is not active.
+
+⸻
+
+# Go to your FastAPI project folder
+cd FastApi
+
+# Activate the virtual environment (enables installed packages like fastapi & uvicorn)
+source fastenv/bin/activate
+
+# Run the FastAPI server with auto-reload (reloads on code changes)
+uvicorn main:app --reload
+
+Second One App
+uvicorn app:app --reload
+
+
+For Streamlit,  - Front End
+source fastenv/bin/activate
+pip install streamlit
+streamlit run app.py
+
+run only main
+fastapi dev main.py
+
+reload
+fastapi dev main.py --reload
+-------------------- - - - -- - - - -- - - -- - - -- - - - - - - -- - - - - - - - - -- - - - - - - - - -
+
+🧠 Pydantic (FastAPI) – Short Notes
+	•	Used in FastAPI for data validation
+	•	Based on Python type hints
+	•	Automatically validates request & response data
+
+⸻
+
+✅ Example
+
+from pydantic import BaseModel
+
+class User(BaseModel):
+    name: str
+    age: int
+
+✅ Features
+	•	Type validation (int, str, etc.)
+	•	Default & optional fields
+	•	Auto error response
+	•	Converts data ("25" → 25)
+
+✅ With FastAPI
+
+@app.post("/user")
+def create_user(user: User):
+    return user
+
+🔥 Key Point -> No manual validation needed — FastAPI + Pydantic handles everything automatically.
+
+-------------------- - - - -- - - - -- - - -- - - -- - - - - - - -- - - - - - - - - -- - - - - - - - - -
+
+⸻
+
+🐳 Docker
+	•	Platform to build, ship, and run applications in isolation
+	•	Uses containers (lightweight, fast, portable)
+	•	Solves “works on my machine” problem
+
+⸻
+
+📦 Docker Registry / Hub
+	•	Storage for Docker images
+	•	Like GitHub but for images
+	•	Public registry: Docker Hub
+	•	Can also have private registries
+
+⸻
+
+📄 Dockerfile
+	•	Recipe to build an image
+	•	Contains step-by-step instructions:
+	•	Base image (FROM)
+	•	Install dependencies (RUN)
+	•	Copy code (COPY)
+	•	Start app (CMD)
+	•	Used with: docker build
+
+⸻
+
+🖼️ Docker Images (Lifecycle)
+	•	Read-only template to create containers
+
+Lifecycle:
+	1.	Create → Write Dockerfile
+	2.	Build → docker build → Image created
+	3.	Push → Upload to registry
+	4.	Pull → Download from registry
+	5.	Run → Create container
+	6.	Update → Rebuild new image version
+	7.	Remove → Delete unused images
+
+⸻
+
+📦 Container
+	•	Running instance of an image
+	•	Isolated environment with:
+	•	App
+	•	Dependencies
+	•	Config
+	•	Starts fast, lightweight (unlike VMs)
+
+⸻
+
+⚡ Quick Memory Trick
+	•	Dockerfile → Image → Container
+	•	Registry = storage
+
+
+--------------------------------------------------------------------------------------------------
+Here’s a short, easy-to-remember note for ngrok setup & run 👇
+
+📝 ngrok Quick Notes
+
+⚡ What is ngrok?
+	•	Exposes local server → public internet
+	•	Gives HTTPS URL for testing on mobile
+
+🚀 Setup (One-time)
+	1.	Install:
+
+brew install ngrok
+
+	2.	Add auth token:
+
+ngrok config add-authtoken YOUR_TOKEN
+
+▶️ Run (Every time)
+	1.	Start your server (e.g., FastAPI):
+
+uvicorn main:app --host 0.0.0.0 --port 8000
+
+	2.	Start ngrok:
+
+ngrok http 8000
+
+🌐 Output
+
+https://xxxxx.ngrok-free.app → http://localhost:8000
+
+👉 Use this URL in mobile app
+📱 Usage
+
+Replace:
+
+http://localhost:8000
+
+With:
+
+https://xxxxx.ngrok-free.app
+
+
+⚠️ Important
+	•	URL changes on restart
+	•	Keep both running:
+	•	Server
+	•	ngrok
+	•	Always use HTTPS
+
+⸻
+
+🧠 Memory Trick
+
+Local API → ngrok → Public URL → Mobile
+
+
+⸻
+
+🔁 Restart Steps (Quick Note)
+	1.	Start server (e.g., FastAPI):
+uvicorn main:app --host 0.0.0.0 --port 8000
+	2.	Start ngrok:
+ngrok http 8000
+
+
+---------- - - --------------- --- - - 🧠 🚀 FastAPI Project Flow (Your Architecture) -- -- - - - - - -- - - - -----------------------------
+
+📌 High-level flow
+
+Client Request
+    ↓
+main.py (FastAPI app starts)
+    ↓
+Router (APIRouter - endpoint match)
+    ↓
+Controller (business logic)
+    ↓
+Database Layer (SQLAlchemy)
+    ↓
+Response returned back to client
+
+⸻
+
+🔁 Step-by-step explanation
+
+1️⃣ Client Request
+
+POST /tasks/create
+GET  /tasks/details/1
+
+👉 Sent from:
+	•	Browser / Postman / Curl / Frontend
+
+⸻
+
+2️⃣ main.py (Entry point)
+
+app = FastAPI()
+app.include_router(task_routes)
+
+👉 Responsibilities:
+	•	Starts the app
+	•	Registers all routes
+	•	Initializes resources (DB, etc.)
+
+⸻
+
+3️⃣ Router Layer (task_routes.py)
+
+@task_routes.post("/create")
+def create_task(body: TaskSchema, db=Depends(get_db)):
+    return controller.create_task(body, db)
+
+👉 Responsibilities:
+	•	Handles request URL
+	•	Validates input (via Pydantic)
+	•	Injects dependencies (db)
+	•	Calls controller
+
+⸻
+
+4️⃣ Controller Layer (controller.py)
+
+def create_task(body, db):
+
+👉 Responsibilities:
+	•	Business logic
+	•	Data processing
+	•	Calls DB operations
+	•	Prepares response
+
+⸻
+
+5️⃣ Database Layer (db.py + models)
+
+db.add(new_task)
+db.commit()
+
+👉 Responsibilities:
+	•	Interact with database
+	•	Perform CRUD operations
+	•	Return ORM objects
+
+⸻
+
+6️⃣ Response Flow Back
+
+DB → Controller → Router → FastAPI → Client
+
+
+⸻
+
+🧠 Full Flow Example (Create Task)
+
+Client (POST /tasks/create)
+    ↓
+main.py → route registered
+    ↓
+task_routes.create_task()
+    ↓
+controller.create_task()
+    ↓
+TaskModel(...) created
+    ↓
+db.add() + db.commit()
+    ↓
+Response returned
+    ↓
+Client receives JSON
+
+
+⸻
+
+📦 Visual Diagram
+
+[ Client ]
+     ↓
+[ FastAPI App (main.py) ]
+     ↓
+[ Router (task_routes.py) ]
+     ↓
+[ Controller (controller.py) ]
+     ↓
+[ Database (SQLAlchemy + PostgreSQL) ]
+     ↓
+[ Response back to Client ]
+
+
+⸻
+
+🧠 Key Concepts Mapping
+
+Layer	Role
+main.py	App entry point
+Router	Request handling
+Controller	Business logic
+Model	DB structure
+DB Session	DB communication
+
+
+⸻
+
+🧠 One-line summary
+
+👉 Request flows from client → router → controller → DB → back to client
+
+⸻
+
+🚀 Bonus (very important insight)
+
+Your current architecture is:
+
+Router → Controller → DB
+
+👉 This is already better than most beginners
+
+⸻
+
+🔥 Next level (future)
+
+Real-world apps add:
+
+Router → Controller → Service → Repository → DB
+
+
+---------------------  🔐 Authentication Setup (JWT + Password Hashing)  -----------------------------
+
+⸻
+
+📌 1. Install Required Libraries
+
+pip install PyJWT
+pip install "pwdlib[argon2]"
+
+
+⸻
+
+🧠 2. What & Why
+
+✅ JWT (JSON Web Token)
+
+👉 Used for authentication (login sessions)
+	•	After login → server gives a token
+	•	Client sends token in every request
+	•	Server verifies token → allows access
+
+⸻
+
+🔑 JWT Flow
+
+User Login → Verify credentials → Generate JWT Token → Send to client
+Client → Sends token in headers → Server verifies → Access granted
+
+
+⸻
+
+📦 JWT Structure
+
+HEADER.PAYLOAD.SIGNATURE
+
+Example:
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+
+⸻
+
+🧠 3. Password Hashing (Very Important)
+
+👉 Never store plain passwords ❌
+👉 Always store hashed passwords ✅
+
+⸻
+
+🔒 Why hashing?
+
+User password → Hash → Store in DB
+
+Even if DB leaks → password stays safe
+
+⸻
+
+⚙️ 4. Password Hashing Example
+
+from pwdlib import PasswordHash
+
+# Create hasher (argon2 algorithm)
+password_hash = PasswordHash.recommended()
+
+# Hash password
+hashed = password_hash.hash("my_password")
+
+# Verify password
+password_hash.verify("my_password", hashed)  # True/False
+
+
+⸻
+
+🔐 5. JWT Token Generation
+
+import jwt
+from datetime import datetime, timedelta
+
+SECRET_KEY = "your_secret_key"
+ALGORITHM = "HS256"
+
+
+def create_access_token(data: dict):
+    to_encode = data.copy()
+
+    # Add expiry time
+    expire = datetime.utcnow() + timedelta(minutes=30)
+    to_encode.update({"exp": expire})
+
+    # Generate token
+    token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+    return token
+
+
+⸻
+
+🔓 6. Decode / Verify JWT
+
+def verify_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except jwt.ExpiredSignatureError:
+        return "Token expired"
+    except jwt.InvalidTokenError:
+        return "Invalid token"
+
+
+⸻
+
+📡 7. How client sends token
+
+Authorization: Bearer <your_token>
+
+
+⸻
+
+🔁 Full Auth Flow
+
+Signup → Hash password → Save in DB
+Login → Verify password → Generate JWT
+Client stores token
+Client sends token in every request
+Server verifies token → gives access
+
+
+⸻
+
+⚠️ Important Best Practices
+
+🔑 Secret key
+
+SECRET_KEY = "super-secret-key"
+
+👉 Keep in .env (never hardcode)
+
+⸻
+
+⏱ Token expiry
+	•	Always set expiration (exp)
+	•	Example: 15–30 minutes
+
+⸻
+
+🔒 Hash algorithm
+	•	Use argon2 (recommended)
+	•	Secure & modern
+
+⸻
+
+🧠 One-line summary
+
+👉 JWT = authentication token
+👉 Hashing = secure password storage
+
+⸻
+
+🚀 Next step (recommended)
+
+Now you should implement:
+	•	✅ Signup API (hash password)
+	•	✅ Login API (verify + return token)
+	•	✅ Protected route (JWT validation)
+
+⸻
+
+If you want, I can give you:
+👉 ￼ Full Auth implementation (Signup + Login + JWT + Protected Routes) ready-to-use code
