@@ -1,4 +1,3 @@
-````markdown
 # 🚀 Task Management API
 
 A modern and scalable **Task Management REST API** built using **FastAPI** and **PostgreSQL** with secure JWT authentication, modular architecture, and clean backend development practices.
@@ -34,15 +33,12 @@ This project follows:
 
 ### 🔄 Architecture Layers
 
-```bash
 API Routes → Controllers → Database Models
-````
 
 ---
 
 # 📂 Project Structure
 
-```bash
 TaskManagementApp/
 │
 ├── main.py
@@ -69,8 +65,6 @@ TaskManagementApp/
         ├── settings.py
         ├── helper.py
         └── constant.py
-```
-
 ---
 
 # 🛠️ Tech Stack
